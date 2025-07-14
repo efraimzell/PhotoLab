@@ -2,26 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Smiley Prank</title>
   <style>
-    body {
-      margin: 0;
+    html, body {
+      margin: 0; padding: 0; height: 100%;
       overflow: hidden;
-      font-family: Arial, sans-serif;
       background: white;
+      font-family: Arial, sans-serif;
+      user-select: none;
     }
     .emoji {
       position: absolute;
-      font-size: 2rem;
-      user-select: none;
       pointer-events: none;
+      font-size: 2rem;
     }
     .message {
-      position: absolute;
+      position: fixed;
       top: 40%;
       width: 100%;
       text-align: center;
-      font-size: 2em;
+      font-size: 2.5rem;
       display: none;
     }
   </style>
@@ -30,24 +31,26 @@
   <div class="message">You've been smiley-bombed! 😜</div>
 
   <script>
-    const duration = 10000; // 10 seconds
-    const start = Date.now();
+    const DURATION_MS = 10000; // 10 seconds
+    const startTime = Date.now();
 
-    const interval = setInterval(() => {
-      const emoji = document.createElement("div");
-      emoji.className = "emoji";
-      emoji.textContent = "😊";
-      emoji.style.left = Math.random() * window.innerWidth + "px";
-      emoji.style.top = Math.random() * window.innerHeight + "px";
-      emoji.style.fontSize = Math.random() * 40 + 20 + "px";
+    const spawnEmoji = () => {
+      const emoji = document.createElement('div');
+      emoji.className = 'emoji';
+      emoji.textContent = '😊';
+      emoji.style.left = Math.random() * window.innerWidth + 'px';
+      emoji.style.top = Math.random() * window.innerHeight + 'px';
+      emoji.style.fontSize = (20 + Math.random() * 40) + 'px';
       document.body.appendChild(emoji);
+    };
 
-      if (Date.now() - start > duration) {
-        clearInterval(interval);
-        document.querySelector(".message").style.display = "block";
+    const intervalId = setInterval(() => {
+      spawnEmoji();
+      if (Date.now() - startTime >= DURATION_MS) {
+        clearInterval(intervalId);
+        document.querySelector('.message').style.display = 'block';
       }
     }, 50);
   </script>
 </body>
 </html>
-
